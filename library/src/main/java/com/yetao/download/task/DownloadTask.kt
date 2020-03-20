@@ -30,6 +30,10 @@ open class DownloadTask : IDownloadTask {
         return this
     }
 
+    override fun removeRequestHeader(key: String) {
+        requestHeaders.remove(key)
+    }
+
     override fun getRequestHeader(key: String): String? = requestHeaders[key]
 
     override fun getAllRequestHeaders(): Map<String, String> = requestHeaders

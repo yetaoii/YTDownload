@@ -12,6 +12,7 @@ object SqlConstant {
     const val SQL_FIELD_SAVE_PATH = "save_path"
     const val SQL_FIELD_PROGRESS = "progress"
     const val SQL_FIELD_TOTAL = "total"
+    const val SQL_FIELD_FILE_MODIFY_TIME = "file_modify_time"
     const val SQL_FIELD_UPDATE_TIME = "update_time"
     const val SQL_FIELD_CREATE_TIME = "create_time"
 }

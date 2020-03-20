@@ -9,6 +9,7 @@ data class TaskBody(
     var savePath: String,
     var progress: Long = 0,
     var total: Long = 0,
+    var fileModifyTime: String? = null,
     var updateTime: Long = 0,
     var createTime: Long = 0
 ) {

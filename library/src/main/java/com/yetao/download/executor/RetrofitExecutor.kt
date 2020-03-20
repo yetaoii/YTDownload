@@ -1,22 +1,22 @@
 package com.yetao.download.executor
 
-import com.yetao.download.model.api.DownloadApiService
-import com.yetao.download.model.api.DownloadRetrofit
-import com.yetao.download.model.api.ProgressListener
-import com.yetao.download.model.api.ProgressResponseBody
 import com.yetao.download.callback.DownloadCall
 import com.yetao.download.exception.StreamErrorException
 import com.yetao.download.exception.UrlErrorException
 import com.yetao.download.manager.YTDownloadManager
+import com.yetao.download.model.api.*
 import com.yetao.download.model.store.SqlManager
 import com.yetao.download.model.store.TaskBody
 import com.yetao.download.util.FileUtil
+import com.yetao.download.util.HeaderUtil
+import com.yetao.download.util.subscribeOnIo
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
+import retrofit2.Response
 import java.lang.Exception
 import java.util.*
 
@@ -40,22 +40,11 @@ class RetrofitExecutor : Executor {
     override fun execute(call: DownloadCall) {
         checkUrlEmpty(call.task.getUrl())
         this.call = call
-        downloadApiService.downloadProgress(
-            call.task.getUrl()!!,
-            call.task.getAllRequestHeaders()
-        )
-            .subscribeOn(Schedulers.io())
-            .flatMap { t ->
-                return@flatMap Observable.create<DownloadCall> { emitter ->
-                    checkBodyNull(t.body())?.let {
-                        emitter.onError(it)
-                        return@create
-                    }
-                    val body = ProgressResponseBody(t.body()!!)
-                    readBody(body, call, emitter)
-                    writeFile(body,call, emitter)
-                }
-
+        downloadApiService.getHeaders(call.task.getUrl()!!, call.task.getAllRequestHeaders())
+            .subscribeOnIo()
+            .flatMap {
+                checkFileModified(it, call)
+                realDownload(call)
             }.subscribe(object : Observer<DownloadCall> {
                 override fun onComplete() {
                     call.callback.onCompleted()
@@ -75,7 +64,48 @@ class RetrofitExecutor : Executor {
                 }
 
             })
+
     }
+
+    private fun checkFileModified(it: Response<Void>, call: DownloadCall) {
+        if (!call.range) {
+            return
+        }
+        val headers = HeaderUtil.convertHeaders(it.headers())
+        if (headers.containsKey(ApiConstants.RESPONSE_HEADER_LAST_MODIFIED.toLowerCase())
+            && headers.containsKey(ApiConstants.RESPONSE_HEADER_CONTENT_LENGTH)
+        ) {
+            SqlManager.instance.find(call.task.getUrl()!!)?.apply {
+                //由于有cdn不能取LAST_MODIFIED头判断
+                if ((progress + (headers[ApiConstants.RESPONSE_HEADER_CONTENT_LENGTH]?.toLong()
+                        ?: 0L)) != total
+                ) {
+                    call.range = false
+                    call.task.removeRequestHeader("Range")
+                }
+            }
+        }
+
+    }
+
+    private fun realDownload(call: DownloadCall) = downloadApiService.download(
+        call.task.getUrl()!!,
+        call.task.getAllRequestHeaders()
+    )
+        .subscribeOn(Schedulers.io())
+        .flatMap { t ->
+            return@flatMap Observable.create<DownloadCall> { emitter ->
+                call.task.addAllResponseHeaders(HeaderUtil.convertHeaders(t.headers()))
+                checkBodyNull(t.body())?.let {
+                    emitter.onError(it)
+                    return@create
+                }
+                val body = ProgressResponseBody(t.body()!!)
+                readBody(body, call, emitter)
+                writeFile(body, call, emitter)
+            }
+
+        }
 
     /**
      * 写到文件
@@ -119,11 +149,14 @@ class RetrofitExecutor : Executor {
             } else {
                 this.savePath = filePath1
             }
+            this.fileModifyTime =
+                call.task.getResponseHeader(ApiConstants.RESPONSE_HEADER_LAST_MODIFIED.toLowerCase())
             SqlManager.instance.update(this)
         } ?: SqlManager.instance.insert(
             TaskBody(
                 call.task.getUrl()!!,
                 filePath1,
+                fileModifyTime = call.task.getResponseHeader(ApiConstants.RESPONSE_HEADER_LAST_MODIFIED.toLowerCase()),
                 total = body.contentLength() + call.rangeStart
             )
         )
@@ -164,7 +197,7 @@ class RetrofitExecutor : Executor {
     /**
      * 检查url空
      */
-    private fun checkUrlEmpty(url:String?) {
+    private fun checkUrlEmpty(url: String?) {
         if (url.isNullOrBlank()) {
             throw UrlErrorException("Url is null or blank.Please check url")
         }
@@ -173,7 +206,7 @@ class RetrofitExecutor : Executor {
     /**
      * 检查流内容为空
      */
-    private fun checkBodyNull(responseBody: ResponseBody?):Exception? {
+    private fun checkBodyNull(responseBody: ResponseBody?): Exception? {
         if (responseBody?.byteStream() == null) {
             return StreamErrorException("stream body is null")
         }

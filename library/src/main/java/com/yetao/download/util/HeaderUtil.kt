@@ -9,7 +9,7 @@ import okhttp3.Headers
 object HeaderUtil {
     fun convertHeaders(headers: Headers) = hashMapOf<String, String>().apply {
         for (i in 0 until headers.size()) {
-            this[headers.name(i)] = headers.value(i)
+            this[headers.name(i).toLowerCase()] = headers.value(i)
         }
     }
 }

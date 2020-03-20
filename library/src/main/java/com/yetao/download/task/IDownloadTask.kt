@@ -25,6 +25,8 @@ interface IDownloadTask {
      */
     fun addRequestHeader(key: String, value: String): IDownloadTask
 
+    fun removeRequestHeader(key: String)
+
     /**
      * 获取请求头
      */
@@ -131,4 +133,5 @@ interface IDownloadTask {
      * 转并行批量下载
      */
     fun parallel(): IRxTask
+
 }

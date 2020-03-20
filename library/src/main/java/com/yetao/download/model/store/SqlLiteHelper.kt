@@ -22,6 +22,7 @@ class SqlLiteHelper(
                     ",${SqlConstant.SQL_FIELD_SAVE_PATH} varchar(512)" +
                     ",${SqlConstant.SQL_FIELD_PROGRESS} INTEGER" +
                     ",${SqlConstant.SQL_FIELD_TOTAL} INTEGER" +
+                    ",${SqlConstant.SQL_FIELD_FILE_MODIFY_TIME} varchar(50)" +
                     ",${SqlConstant.SQL_FIELD_UPDATE_TIME} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP" +
                     ",${SqlConstant.SQL_FIELD_CREATE_TIME} DateTime DEFAULT CURRENT_TIMESTAMP" +
                     ")"

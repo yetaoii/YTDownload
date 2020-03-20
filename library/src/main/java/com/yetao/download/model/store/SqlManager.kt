@@ -39,6 +39,7 @@ class SqlManager private constructor() {
             values.put(SqlConstant.SQL_FIELD_SAVE_PATH, body.savePath)
             values.put(SqlConstant.SQL_FIELD_PROGRESS, body.progress)
             values.put(SqlConstant.SQL_FIELD_TOTAL, body.total)
+            values.put(SqlConstant.SQL_FIELD_FILE_MODIFY_TIME, body.fileModifyTime)
             //数据库执行插入命令
             getWritableDatabase()?.apply {
                 use {
@@ -86,6 +87,7 @@ class SqlManager private constructor() {
                             SqlConstant.SQL_FIELD_SAVE_PATH,
                             SqlConstant.SQL_FIELD_PROGRESS,
                             SqlConstant.SQL_FIELD_TOTAL,
+                            SqlConstant.SQL_FIELD_FILE_MODIFY_TIME,
                             SqlConstant.SQL_FIELD_UPDATE_TIME,
                             SqlConstant.SQL_FIELD_CREATE_TIME
                         ),
@@ -100,12 +102,14 @@ class SqlManager private constructor() {
                         val savePath = cursor.getString(cursor.getColumnIndex(SqlConstant.SQL_FIELD_SAVE_PATH))
                         val progress = cursor.getLong(cursor.getColumnIndex(SqlConstant.SQL_FIELD_PROGRESS))
                         val total = cursor.getLong(cursor.getColumnIndex(SqlConstant.SQL_FIELD_TOTAL))
-                        val updateTime =
+                        val fileModifyTime =
+                            cursor.getString(cursor.getColumnIndex(SqlConstant.SQL_FIELD_FILE_MODIFY_TIME))
+                          val updateTime =
                             cursor.getLong(cursor.getColumnIndex(SqlConstant.SQL_FIELD_UPDATE_TIME))
                         val createTime =
                             cursor.getLong(cursor.getColumnIndex(SqlConstant.SQL_FIELD_CREATE_TIME))
                         if (result == null) {
-                            result = TaskBody(url, savePath, progress, total, updateTime, createTime)
+                            result = TaskBody(url, savePath, progress, total, fileModifyTime,updateTime, createTime)
                         }
                     }
                     // 关闭游标，释放资源
@@ -128,6 +132,7 @@ class SqlManager private constructor() {
             values.put(SqlConstant.SQL_FIELD_SAVE_PATH, body.savePath)
             values.put(SqlConstant.SQL_FIELD_PROGRESS, body.progress)
             values.put(SqlConstant.SQL_FIELD_TOTAL, body.total)
+            values.put(SqlConstant.SQL_FIELD_FILE_MODIFY_TIME, body.fileModifyTime)
             var status = -1;
             getWritableDatabase()?.apply {
                 use {
