@@ -179,7 +179,7 @@
 
     YTDownloadManager.instance.cancel(url)//取消单个下载任务
     YTDownloadManager.instance.cancelAll()//取消下载
-    YTDownloadManager.instance.parallel(array或List)//数组列表转换并下载
-    YTDownloadManager.instance.serial(array或List)//数组列表转换串行载
+    YTDownloadManager.instance.parallel(array或List)//数组列表转换并行下载
+    YTDownloadManager.instance.serial(array或List)//数组列表转换串行下载
 ```
 
