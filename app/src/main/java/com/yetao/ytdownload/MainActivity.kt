@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ).subscribe {
                 if (it) {
-                    parallelDownload()
+                    singeDownload()
                 }
             }
 
@@ -74,10 +74,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-        //取消下载
-        disposable?.dispose()
-        //或者
-        task.pause()
+//        //取消下载
+//        disposable?.dispose()
+//        //或者
+//        task.pause()
     }
 
     private fun serialDownload(){
@@ -115,10 +115,10 @@ class MainActivity : AppCompatActivity() {
                     "onError  message:${e.message}".log()
                 }
             })
-        //取消下载
-        disposable?.dispose()
-        //或者
-        task.pause()
+//        //取消下载
+//        disposable?.dispose()
+//        //或者
+//        task.pause()
     }
 
     private fun parallelDownload(){
