@@ -16,7 +16,8 @@
 在app的build.gradle中添加依赖
 
 ```java
-    
+    //仓库mavenCentral()
+    implementation "com.yetaoii:yt-download:1.0.0"
 ```
 
 
