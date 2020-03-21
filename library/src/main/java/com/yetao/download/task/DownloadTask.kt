@@ -115,6 +115,7 @@ open class DownloadTask : IDownloadTask {
         }
         return false
     }
+    internal fun filterByte(info: DownloadInfo): Boolean = (info.currentBytes == info.totalBytes && info.currentBytes >= 0 && info.totalBytes > 0)
 
 
 }

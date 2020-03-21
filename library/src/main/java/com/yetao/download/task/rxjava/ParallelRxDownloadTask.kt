@@ -1,6 +1,7 @@
 package com.yetao.download.task.rxjava
 
 import com.yetao.download.dispatcher.Dispatcher
+import com.yetao.download.model.store.SqlManager
 import com.yetao.download.task.DownloadTask
 import com.yetao.download.task.inf.IDownloadTask
 import com.yetao.download.task.inf.IRxTask
@@ -33,10 +34,12 @@ class ParallelRxDownloadTask : DownloadTask,
         val observables = ArrayList<Observable<DownloadInfo>>()
         for (url in getUrls()) {
             val task = single(url)
-            if (task is IDownloadTask)
+            if (task is IDownloadTask) {
                 infoMap[url] = DownloadInfo(task.setIntervalTime(0))
+            }
             observables.add(task.rxjava())
         }
+        updateProgressFromDB(infoMap)
         return Observable.merge<DownloadInfo>(observables)
             .flatMap {
                 infoMap[it.task.getUrl()]?.apply {
@@ -46,10 +49,19 @@ class ParallelRxDownloadTask : DownloadTask,
                 Observable.just(it)
             }
             .filter {
-                filterTime() ||(it.currentBytes == it.totalBytes && it.currentBytes >= 0 && it.totalBytes > 0)
+                filterTime() || filterByte(it)
             }.flatMap {
                 Observable.just(infoMap.values.toList())
             }
+    }
+
+    private fun updateProgressFromDB(map: ConcurrentHashMap<String, DownloadInfo>){
+        for((url,info) in map){
+            SqlManager.instance.find(url)?.apply {
+                info.currentBytes = progress
+                info.totalBytes = total
+            }
+        }
     }
 
     override fun pause() {
