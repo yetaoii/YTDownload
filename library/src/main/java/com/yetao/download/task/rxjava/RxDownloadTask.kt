@@ -37,7 +37,7 @@ open class RxDownloadTask : DownloadTask,
                 )
             )
         }).filter {
-            filterTime()
+            filterTime() ||(it.currentBytes == it.totalBytes && it.currentBytes >= 0 && it.totalBytes > 0)
         }
     }
 

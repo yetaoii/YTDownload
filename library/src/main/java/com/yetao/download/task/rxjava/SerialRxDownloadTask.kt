@@ -34,7 +34,7 @@ open class SerialRxDownloadTask : DownloadTask,
         for (url in getUrls()) {
             val task = single(url)
             if (task is IDownloadTask)
-                infoMap[url] = DownloadInfo(task)
+                infoMap[url] = DownloadInfo(task.setIntervalTime(0))
             observables.add(task.rxjava())
         }
         return Observable.concat<DownloadInfo>(observables)
@@ -43,10 +43,12 @@ open class SerialRxDownloadTask : DownloadTask,
                     currentBytes = it.currentBytes
                     totalBytes = it.totalBytes
                 }
-                Observable.just(infoMap.values.toList())
+                Observable.just(it)
             }
             .filter {
-                filterTime()
+                filterTime() ||(it.currentBytes == it.totalBytes && it.currentBytes >= 0 && it.totalBytes > 0)
+            }.flatMap {
+                Observable.just(infoMap.values.toList())
             }
     }
 

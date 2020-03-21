@@ -17,6 +17,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import retrofit2.Response
+import java.io.File
 import java.lang.Exception
 import java.util.*
 
@@ -127,9 +128,12 @@ class RetrofitExecutor : Executor {
         FileUtil.writeFile(
             body.byteStream(),
             filePath,
-            call.range
+            call.range,
+            {
+                !emitter.isDisposed//停止读的条件
+            }
         ) {
-            !emitter.isDisposed//停止读的条件
+            updateProgressToDb(call)
         }
     }
 
@@ -216,7 +220,12 @@ class RetrofitExecutor : Executor {
      */
     private fun updateProgressToDb(call: DownloadCall) {
         SqlManager.instance.find(call.task.getUrl()!!)?.apply {
-            progress = call.downloadInfo.currentBytes
+            val file = File(savePath)
+            if (file.exists() && call.downloadInfo.currentBytes != 0L) {
+                progress = file.length()
+            } else {
+                progress = call.downloadInfo.currentBytes
+            }
             total = call.downloadInfo.totalBytes
             SqlManager.instance.update(this)
         }
@@ -224,9 +233,9 @@ class RetrofitExecutor : Executor {
 
     override fun cancel() {
         disposable?.dispose()
-        call?.let {
-            updateProgressToDb(it)
-        }
+//        call?.let {
+//            updateProgressToDb(it)
+//        }
     }
 
 }

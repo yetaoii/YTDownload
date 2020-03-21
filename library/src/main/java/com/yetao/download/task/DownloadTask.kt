@@ -109,7 +109,7 @@ open class DownloadTask : IDownloadTask {
 
     internal fun filterTime(): Boolean {
         val currentTime = System.currentTimeMillis()
-        if (currentTime - time > getIntervalTime()) {
+        if (currentTime - time >= getIntervalTime()) {
             time = currentTime
             return true
         }

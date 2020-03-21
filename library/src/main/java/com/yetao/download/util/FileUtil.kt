@@ -16,7 +16,8 @@ object FileUtil {
         inputStream: InputStream,
         filePath:String?,
         range: Boolean = false,
-        running:(()->Boolean)? = null
+        running:(()->Boolean)? = null,
+        closed:(()->Unit?)? =null
     ) {
         val file = File(filePath)
         if (!file.exists()) {
@@ -28,7 +29,6 @@ object FileUtil {
         var fos = FileOutputStream(file, range)
         val buffer = ByteArray(2048)
         // 3.开始读文件
-        // 3.开始读文件
         var len = -1
         try {
             while (running?.invoke() != false && inputStream.read(buffer).also {
@@ -38,8 +38,9 @@ object FileUtil {
             }
 
         } catch (e: IOException) {
-//            e.printStackTrace()
+            e.printStackTrace()
         } finally {
+            closed?.invoke()
             fos.close()
             inputStream.close()
         }
