@@ -18,7 +18,7 @@
 
 ```java
     //仓库mavenCentral()
-    implementation "com.yetaoii:yt-download:1.0.2"
+    implementation "com.yetaoii:yt-download:1.0.3"
 ```
 
 
