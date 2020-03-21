@@ -2,10 +2,9 @@ package com.yetao.download.task.rxjava
 
 import com.yetao.download.dispatcher.Dispatcher
 import com.yetao.download.task.DownloadTask
-import com.yetao.download.task.IDownloadTask
-import com.yetao.download.task.IRxTask
+import com.yetao.download.task.inf.IDownloadTask
+import com.yetao.download.task.inf.IRxTask
 import com.yetao.download.task.data.DownloadInfo
-import com.yetao.download.util.as2
 import io.reactivex.Observable
 import java.util.concurrent.ConcurrentHashMap
 
@@ -13,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap
  *  Created by yetao on 2020/3/20
  *  description
  **/
-open class SerialRxDownloadTask : DownloadTask, IRxTask<List<DownloadInfo>> {
+open class SerialRxDownloadTask : DownloadTask,
+    IRxTask<List<DownloadInfo>> {
 
     private val infoMap = ConcurrentHashMap<String, DownloadInfo>()
 

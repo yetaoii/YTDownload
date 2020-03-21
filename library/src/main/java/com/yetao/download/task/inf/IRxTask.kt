@@ -1,6 +1,5 @@
-package com.yetao.download.task
+package com.yetao.download.task.inf
 
-import com.yetao.download.task.data.DownloadInfo
 import io.reactivex.Observable
 
 /**
@@ -10,5 +9,6 @@ import io.reactivex.Observable
 interface IRxTask<T> {
 
     fun rxjava(): Observable<T>
+
     fun pause()
 }

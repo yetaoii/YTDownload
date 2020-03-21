@@ -1,6 +1,6 @@
 package com.yetao.download.task.data
 
-import com.yetao.download.task.IDownloadTask
+import com.yetao.download.task.inf.IDownloadTask
 
 /**
  *  Created by yetao on 2020/3/18

@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Environment
 import com.yetao.download.dispatcher.Dispatcher
 import com.yetao.download.task.data.DownloadInfo
-import com.yetao.download.task.IDownloadTask
+import com.yetao.download.task.inf.IDownloadTask
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter

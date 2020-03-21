@@ -4,17 +4,17 @@ import com.yetao.download.callback.DownloadCall
 import com.yetao.download.callback.RxCallback
 import com.yetao.download.dispatcher.RangeDispatcher
 import com.yetao.download.task.DownloadTask
-import com.yetao.download.task.IRxTask
+import com.yetao.download.task.inf.IRxTask
 import com.yetao.download.task.data.DownloadInfo
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 
 /**
  *  Created by yetao on 2020/3/18
  *  description
  **/
-open class RxDownloadTask : DownloadTask, IRxTask<DownloadInfo> {
+open class RxDownloadTask : DownloadTask,
+    IRxTask<DownloadInfo> {
 
 
     internal constructor()

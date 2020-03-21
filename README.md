@@ -6,6 +6,7 @@
 
 * 基于Retrofit和Okhttp3来请求网络
 * 基于RxJava，支持链式调用
+* 支持RxJava的LifeCycle绑定生命周期控制
 * 支持断点续传，默认开启
 * 支持串行、和并行批量下载
 * 支持进度回调
@@ -17,7 +18,7 @@
 
 ```java
     //仓库mavenCentral()
-    implementation "com.yetaoii:yt-download:1.0.1"
+    implementation "com.yetaoii:yt-download:1.0.2"
 ```
 
 
@@ -108,7 +109,7 @@
             .serial()//转换串行下载
 
         task.rxjava()//转rxjava回调，使用dispose()取消下载，可继续使用链式
-            .subscribe(object : Observer<DownloadInfo> {
+            .subscribe(object : Observer<List<DownloadInfo>> {
                 override fun onComplete() {
 
                 }
@@ -117,7 +118,7 @@
                     disposable = d
                 }
 
-                override fun onNext(t: DownloadInfo) {
+                override fun onNext(t: List<DownloadInfo>) {
                 }
 
                 override fun onError(e: Throwable) {
@@ -152,7 +153,7 @@
             .parallel()//转换串行下载
 
         task.rxjava()//转rxjava回调，使用dispose()取消下载，可继续使用链式
-            .subscribe(object : Observer<DownloadInfo> {
+            .subscribe(object : Observer<List<DownloadInfo>> {
                 override fun onComplete() {
 
                 }
@@ -161,7 +162,7 @@
                     disposable = d
                 }
 
-                override fun onNext(t: DownloadInfo) {
+                override fun onNext(t: List<DownloadInfo>) {
                 }
 
                 override fun onError(e: Throwable) {

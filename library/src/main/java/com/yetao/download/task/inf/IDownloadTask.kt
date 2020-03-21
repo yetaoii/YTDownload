@@ -1,7 +1,6 @@
-package com.yetao.download.task
+package com.yetao.download.task.inf
 
 import com.yetao.download.task.data.DownloadInfo
-import io.reactivex.Observable
 import java.util.HashMap
 
 /**
@@ -65,7 +64,7 @@ interface IDownloadTask {
     /**
      * 添加url和文件名
      */
-    fun addUrl(url: String?,fileName:String? = null): IDownloadTask
+    fun addUrl(url: String?, fileName: String? = null): IDownloadTask
 
     /**
      * 获取url
@@ -116,8 +115,8 @@ interface IDownloadTask {
      * 单任务
      */
     fun single(): IRxTask<DownloadInfo>
-    fun single(url: String?): IRxTask<DownloadInfo>
 
+    fun single(url: String?): IRxTask<DownloadInfo>
 
     /**
      * 转串行批量下载

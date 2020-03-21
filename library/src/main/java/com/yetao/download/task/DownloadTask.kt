@@ -1,14 +1,12 @@
 package com.yetao.download.task
 
-import com.yetao.download.callback.DownloadCall
-import com.yetao.download.callback.RxCallback
 import com.yetao.download.dispatcher.Dispatcher
-import com.yetao.download.dispatcher.RangeDispatcher
 import com.yetao.download.task.data.DownloadInfo
+import com.yetao.download.task.inf.IDownloadTask
+import com.yetao.download.task.inf.IRxTask
 import com.yetao.download.task.rxjava.ParallelRxDownloadTask
 import com.yetao.download.task.rxjava.RxDownloadTask
 import com.yetao.download.task.rxjava.SerialRxDownloadTask
-import io.reactivex.Observable
 import java.util.HashMap
 
 /**

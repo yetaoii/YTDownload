@@ -3,7 +3,7 @@ package com.yetao.download.callback
 import com.yetao.download.dispatcher.Dispatcher
 import com.yetao.download.executor.Executor
 import com.yetao.download.task.data.DownloadInfo
-import com.yetao.download.task.IDownloadTask
+import com.yetao.download.task.inf.IDownloadTask
 
 /**
  *  Created by yetao on 2020/3/18
