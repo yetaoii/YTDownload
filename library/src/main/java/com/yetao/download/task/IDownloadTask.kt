@@ -113,25 +113,20 @@ interface IDownloadTask {
     fun pause()
 
     /**
-     * 转rxjava链式
-     */
-    fun rxjava(): Observable<DownloadInfo>
-
-    /**
      * 单任务
      */
-    fun single(): IRxTask
-    fun single(url: String?): IRxTask
+    fun single(): IRxTask<DownloadInfo>
+    fun single(url: String?): IRxTask<DownloadInfo>
 
 
     /**
      * 转串行批量下载
      */
-    fun serial(): IRxTask
+    fun serial(): IRxTask<List<DownloadInfo>>
 
     /**
      * 转并行批量下载
      */
-    fun parallel(): IRxTask
+    fun parallel(): IRxTask<List<DownloadInfo>>
 
 }

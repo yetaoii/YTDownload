@@ -171,7 +171,6 @@ class RetrofitExecutor : Executor {
         call: DownloadCall,
         emitter: ObservableEmitter<DownloadCall>
     ) {
-        var time = 0L
         body.progressListener = object : ProgressListener {
             override fun update(bytesRead: Long, contentLength: Long, done: Boolean) {
                 call.downloadInfo.currentBytes = bytesRead + call.rangeStart
@@ -181,9 +180,8 @@ class RetrofitExecutor : Executor {
                     updateProgressToDb(call)
                 }
                 //限制回到时间
-                if ((System.currentTimeMillis() - time >= call.task.getIntervalTime() && bytesRead != contentLength) || done) {
+                if ((bytesRead != contentLength) || done) {
                     emitter.onNext(call)
-                    time = System.currentTimeMillis()
                 }
                 //如果已完成触发发射器
                 if (done) {

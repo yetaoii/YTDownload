@@ -7,12 +7,15 @@ import com.yetao.download.task.DownloadTask
 import com.yetao.download.task.IRxTask
 import com.yetao.download.task.data.DownloadInfo
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
 
 /**
  *  Created by yetao on 2020/3/18
  *  description
  **/
-open class RxDownloadTask : DownloadTask, IRxTask {
+open class RxDownloadTask : DownloadTask, IRxTask<DownloadInfo> {
+
 
     internal constructor()
 
@@ -25,7 +28,18 @@ open class RxDownloadTask : DownloadTask, IRxTask {
     }
 
     override fun rxjava(): Observable<DownloadInfo> {
-        return super.rxjava()
+        return Observable.create(ObservableOnSubscribe<DownloadInfo> { emitter ->
+            RangeDispatcher.with().dispatch(
+                DownloadCall(
+                    this@RxDownloadTask,
+                    RxCallback(emitter, this@RxDownloadTask)
+                    , downloadInfo = DownloadInfo(this@RxDownloadTask)
+                )
+            )
+        }).filter {
+            filterTime()
+        }
     }
+
 
 }

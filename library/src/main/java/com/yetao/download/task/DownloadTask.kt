@@ -16,7 +16,6 @@ import java.util.HashMap
  *  description
  **/
 open class DownloadTask : IDownloadTask {
-
     private var urls: ArrayList<String> = arrayListOf()
     private var savePath: String? = null
     private var saveFileNames: HashMap<String, String?> = hashMapOf()
@@ -24,6 +23,7 @@ open class DownloadTask : IDownloadTask {
     private var priority = 10
     private val requestHeaders = hashMapOf<String, String>()
     private val responseHeaders = hashMapOf<String, String>()
+    private var time = 0L//拦截时间
 
     override fun addRequestHeader(key: String, value: String): IDownloadTask {
         requestHeaders[key] = value
@@ -93,30 +93,29 @@ open class DownloadTask : IDownloadTask {
 
     override fun getPriority(): Int = priority
 
-    override fun rxjava(): Observable<DownloadInfo> = Observable.create {
-        RangeDispatcher.with().dispatch(
-            DownloadCall(
-                this,
-                RxCallback(it, this)
-                , downloadInfo = DownloadInfo(this)
-            )
-        )
-    }
-
-    override fun single(): IRxTask =
+    override fun single(): IRxTask<DownloadInfo> =
         single(null)
 
 
-    override fun single(url: String?): IRxTask = RxDownloadTask(this, url)
+    override fun single(url: String?): IRxTask<DownloadInfo> = RxDownloadTask(this, url)
 
-    override fun serial(): IRxTask =
+    override fun serial(): IRxTask<List<DownloadInfo>> =
         SerialRxDownloadTask(this)
 
-    override fun parallel(): IRxTask =
+    override fun parallel(): IRxTask<List<DownloadInfo>> =
         ParallelRxDownloadTask(this)
 
     override fun pause() {
         Dispatcher.with().cancel(getUrl()!!)
+    }
+
+    internal fun filterTime(): Boolean {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - time > getIntervalTime()) {
+            time = currentTime
+            return true
+        }
+        return false
     }
 
 

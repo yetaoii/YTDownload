@@ -7,22 +7,134 @@
     tools:context=".FirstFragment">
 
     <TextView
-        android:id="@+id/textview_first"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_first_fragment"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="单任务    :" />
+
+    <ProgressBar
+
+        android:layout_marginLeft="10dp"
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="20dp"
+        android:max="100"
+        app:layout_constraintRight_toLeftOf="@id/switch1"
+        app:layout_constraintLeft_toRightOf="@id/textview1"
+        app:layout_constraintTop_toTopOf="@id/textview1"
+        app:layout_constraintBottom_toBottomOf="@id/textview1"
+
+        tools:layout_editor_absoluteY="44dp" />
+
+    <Switch
+        app:layout_constraintTop_toTopOf="@id/progressBar1"
+        app:layout_constraintBottom_toBottomOf="@id/progressBar1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:id="@+id/switch1"
+        android:text="0%"
+        android:switchPadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="83dp" />
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/textview1"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="批量串行:" />
+
+    <ProgressBar
+        android:layout_marginLeft="10dp"
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="20dp"
+        android:max="100"
+        app:layout_constraintRight_toLeftOf="@id/switch2"
+        app:layout_constraintLeft_toRightOf="@id/textview2"
+        app:layout_constraintTop_toTopOf="@id/textview2"
+        app:layout_constraintBottom_toBottomOf="@id/textview2"
+
+        tools:layout_editor_absoluteY="44dp" />
+
+    <Switch
+        app:layout_constraintTop_toTopOf="@id/progressBar2"
+        app:layout_constraintBottom_toBottomOf="@id/progressBar2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:id="@+id/switch2"
+        android:text="0%"
+        android:switchPadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="83dp" />
+<TextView
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/textview2"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textview3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="批量并行:" />
+
+    <ProgressBar
+        android:layout_marginLeft="10dp"
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="20dp"
+        android:max="100"
+        app:layout_constraintRight_toLeftOf="@id/switch3"
+        app:layout_constraintLeft_toRightOf="@id/textview3"
+        app:layout_constraintTop_toTopOf="@id/textview3"
+        app:layout_constraintBottom_toBottomOf="@id/textview3"
+
+        tools:layout_editor_absoluteY="44dp" />
+
+    <Switch
+        app:layout_constraintTop_toTopOf="@id/progressBar3"
+        app:layout_constraintBottom_toBottomOf="@id/progressBar3"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:id="@+id/switch3"
+        android:text="0%"
+        android:switchPadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="83dp" />
 
     <Button
         android:id="@+id/button_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

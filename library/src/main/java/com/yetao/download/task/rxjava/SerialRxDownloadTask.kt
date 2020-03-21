@@ -1,16 +1,21 @@
 package com.yetao.download.task.rxjava
 
 import com.yetao.download.dispatcher.Dispatcher
+import com.yetao.download.task.DownloadTask
 import com.yetao.download.task.IDownloadTask
 import com.yetao.download.task.IRxTask
 import com.yetao.download.task.data.DownloadInfo
+import com.yetao.download.util.as2
 import io.reactivex.Observable
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  *  Created by yetao on 2020/3/20
  *  description
  **/
-open class SerialRxDownloadTask : RxDownloadTask, IRxTask {
+open class SerialRxDownloadTask : DownloadTask, IRxTask<List<DownloadInfo>> {
+
+    private val infoMap = ConcurrentHashMap<String, DownloadInfo>()
 
     internal constructor()
 
@@ -24,12 +29,25 @@ open class SerialRxDownloadTask : RxDownloadTask, IRxTask {
         this.addAllRequestHeaders(task.getAllRequestHeaders())
     }
 
-    override fun rxjava(): Observable<DownloadInfo> {
-        var observables = ArrayList<Observable<DownloadInfo>>()
+    override fun rxjava(): Observable<List<DownloadInfo>> {
+        val observables = ArrayList<Observable<DownloadInfo>>()
         for (url in getUrls()) {
-            observables.add(single(url).rxjava())
+            val task = single(url)
+            if (task is IDownloadTask)
+                infoMap[url] = DownloadInfo(task)
+            observables.add(task.rxjava())
         }
         return Observable.concat<DownloadInfo>(observables)
+            .flatMap {
+                infoMap[it.task.getUrl()]?.apply {
+                    currentBytes = it.currentBytes
+                    totalBytes = it.totalBytes
+                }
+                Observable.just(infoMap.values.toList())
+            }
+            .filter {
+                filterTime()
+            }
     }
 
 

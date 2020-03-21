@@ -17,6 +17,8 @@ class RangeDispatcher : Dispatcher() {
     override fun dispatch(call: DownloadCall) {
         //装饰range子弹
         checkRangeFromDb(call.task.getUrl())?.apply {
+            call.downloadInfo.currentBytes = progress
+            call.downloadInfo.totalBytes = total
             call.task.addRequestHeader("Range", "bytes=$progress-$total")
             call.range = true
             call.rangeStart = progress
