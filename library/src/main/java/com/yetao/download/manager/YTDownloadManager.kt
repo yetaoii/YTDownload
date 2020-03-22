@@ -22,13 +22,28 @@ class YTDownloadManager {
 
     var defaultSavePath = Environment.getExternalStorageDirectory().absolutePath + "/Download"
 
+
     var baseUrl: String? = null
 
+    /**
+     * okhttp对象
+     */
     var okHttpClient: OkHttpClient? = null
 
+    /**
+     * 回调适配器
+     */
     var callAdapterFactory: CallAdapter.Factory? = null
 
+    /**
+     * 数据转换器
+     */
     var converterFactory: Converter.Factory? = null
+
+    /**
+     * 最大同时下载任务数
+     */
+    var maxDownloadCount = 5
 
     companion object {
 

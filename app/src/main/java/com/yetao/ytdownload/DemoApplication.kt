@@ -21,5 +21,6 @@ class DemoApplication :Application(){
 //        YTDownloadManager.instance.okHttpClient = //retrofit的okHttpClient
 //        YTDownloadManager.instance.callAdapterFactory = //retrofit的callAdapterFactory
 //        YTDownloadManager.instance.converterFactory = //retrofit的converterFactory
+//        YTDownloadManager.instance.maxDownloadCount = 5//最大同时下载任务数，默认为5
     }
 }

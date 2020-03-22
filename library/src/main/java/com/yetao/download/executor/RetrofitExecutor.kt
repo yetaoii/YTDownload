@@ -68,6 +68,9 @@ class RetrofitExecutor : Executor {
 
     }
 
+    /**
+     * 检查断点续传需求文件是否被修改
+     */
     private fun checkFileModified(it: Response<Void>, call: DownloadCall) {
         if (!call.range) {
             return
@@ -89,6 +92,9 @@ class RetrofitExecutor : Executor {
 
     }
 
+    /**
+     * 真正开始下载
+     */
     private fun realDownload(call: DownloadCall) = downloadApiService.download(
         call.task.getUrl()!!,
         call.task.getAllRequestHeaders()
@@ -221,10 +227,13 @@ class RetrofitExecutor : Executor {
     private fun updateProgressToDb(call: DownloadCall) {
         SqlManager.instance.find(call.task.getUrl()!!)?.apply {
             val file = File(savePath)
-            if (file.exists() && call.downloadInfo.currentBytes != 0L) {
-                progress = file.length()
-            } else {
-                progress = call.downloadInfo.currentBytes
+            progress = when {
+                file.exists() && call.downloadInfo.currentBytes != 0L -> {
+                    file.length()
+                }
+                else -> {
+                    call.downloadInfo.currentBytes
+                }
             }
             total = call.downloadInfo.totalBytes
             SqlManager.instance.update(this)
@@ -233,9 +242,6 @@ class RetrofitExecutor : Executor {
 
     override fun cancel() {
         disposable?.dispose()
-//        call?.let {
-//            updateProgressToDb(it)
-//        }
     }
 
 }

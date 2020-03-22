@@ -2,6 +2,8 @@
 
 最近对网络下载这一块比较感兴趣，所以专门整理和写了一个简易的下载库--YTDownload
 
+github地址：https://github.com/yetaoii/YTDownload
+
 ## 特性
 
 * 基于Retrofit和Okhttp3来请求网络
@@ -9,6 +11,7 @@
 * 支持RxJava的LifeCycle绑定生命周期控制
 * 支持断点续传，默认开启
 * 支持串行、和并行批量下载
+* 支持下载优先级，默认为10
 * 支持进度回调
 * 自动校验服务器文件是否更改(前提，url对应文件还未下好)
 
@@ -18,7 +21,7 @@
 
 ```java
     //仓库mavenCentral()
-    implementation "com.yetaoii:yt-download:1.0.3"
+    implementation "com.yetaoii:yt-download:1.0.4"
 ```
 
 
@@ -45,8 +48,10 @@
         //    YTDownloadManager.instance.baseUrl=//配置retrofit的baseUrl
         //    YTDownloadManager.instance.defaultSavePath = //默认保存路径
         //    YTDownloadManager.instance.okHttpClient = //retrofit的okHttpClient
-        //    YTDownloadManager.instance.callAdapterFactory = //retrofit的callAdapterFactory
-        //    YTDownloadManager.instance.converterFactory = //retrofit的converterFactory
+        //    YTDownloadManager.instance.callAdapterFactory = //retrofit的callAdapterFactory//默认rxjava转换
+        //    YTDownloadManager.instance.converterFactory = //retrofit的converterFactory，默认gson转换
+        //        YTDownloadManager.instance.maxDownloadCount = 5//最大同时下载任务数，默认为5
+
     }
 ```
 
@@ -184,5 +189,6 @@
     YTDownloadManager.instance.cancelAll()//取消下载
     YTDownloadManager.instance.parallel(array或List)//数组列表转换并行下载
     YTDownloadManager.instance.serial(array或List)//数组列表转换串行下载
+    
 ```
 

@@ -35,7 +35,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     api "com.squareup.retrofit2:retrofit:2.7.2"
-//    implementation "com.squareup.okhttp3:okhttp:4.4.0"
     api "io.reactivex.rxjava2:rxjava:2.2.19"
     api "io.reactivex.rxjava2:rxandroid:2.1.1"
     api 'com.squareup.retrofit2:adapter-rxjava2:2.6.2' // 必要依赖，和Rxjava结合必须用到，下面会提到

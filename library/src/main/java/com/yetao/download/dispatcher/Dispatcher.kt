@@ -5,6 +5,7 @@ import com.yetao.download.callback.DownloadCall
 import com.yetao.download.exception.DownloadingErrorException
 import com.yetao.download.exception.UrlErrorException
 import com.yetao.download.executor.RetrofitExecutor
+import com.yetao.download.manager.YTDownloadManager
 import com.yetao.download.model.store.SqlManager
 import com.yetao.download.task.data.DownloadInfo
 import com.yetao.download.util.log
@@ -17,8 +18,7 @@ import java.util.concurrent.*
  **/
 open class Dispatcher {
     companion object {
-        //最大下载数
-        var maxDownloadCount = 5
+
         //正在下载任务
         val downloadingTasks = ConcurrentHashMap<String, DownloadCall>()
         //等待下载队列 -数字越大，优先级越高
@@ -46,7 +46,7 @@ open class Dispatcher {
             return
         }
         call.dispatcher = this
-        if (downloadingTasks.size >= maxDownloadCount) {
+        if (downloadingTasks.size >= YTDownloadManager.instance.maxDownloadCount) {
             waitingTasks.offer(call)
             return
         }
