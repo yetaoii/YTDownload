@@ -20,7 +20,7 @@ github地址：https://github.com/yetaoii/YTDownload
 在app的build.gradle中添加依赖
 
 ```java
-    implementation "com.yetaoii:yt-download:1.0.4"
+    implementation "com.yetaoii:yt-download:1.0.5"
 ```
 
 
@@ -64,7 +64,7 @@ github地址：https://github.com/yetaoii/YTDownload
         val task = DownloadTask()
             .addUrl("http://mxd.clientdown.sdo.com/169/Data169.zip","filename.zip")//下载链接，使用addUrl是方便后续转换批量下载支持,文件名参数可省略
             .setPriority(10)//等待队列中优先级，默认为10
-            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为Download目录
+            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为data的cache目录下
             .setIntervalTime(500)//回调间隔，默认1000ms
             .single()//转换单任务
 
@@ -108,7 +108,7 @@ github地址：https://github.com/yetaoii/YTDownload
             .addUrl("http://jxsj-client.dl.kingsoft.com/jxsjlv/setup/jxsjls_mini_setup_20190416.exe")
             .addUrl("https://ruanshi1.8686c.com/prod/4.6.17944.0223/Zoom.pkg")
             .setPriority(10)//等待队列中优先级，默认为10
-            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为Download目录
+            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为data的cache目录下
             .setIntervalTime(500)//回调间隔，默认1000ms
             .serial()//转换串行下载
 
@@ -152,7 +152,7 @@ github地址：https://github.com/yetaoii/YTDownload
             .addUrl("http://jxsj-client.dl.kingsoft.com/jxsjlv/setup/jxsjls_mini_setup_20190416.exe")
             .addUrl("https://ruanshi1.8686c.com/prod/4.6.17944.0223/Zoom.pkg")
             .setPriority(10)//等待队列中优先级，默认为10
-            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为Download目录
+            .setSavePath(YTDownloadManager.instance.defaultSavePath)//保存路径，默认值为data的cache目录下
             .setIntervalTime(500)//回调间隔，默认1000ms
             .parallel()//转换串行下载
 
