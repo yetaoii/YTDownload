@@ -17,7 +17,7 @@ class DemoApplication :Application(){
         YTDownloadManager.instance.init(this)//初始化
         YTDownloadManager.instance.debug = true//调试模式日志开关
         YTDownloadManager.instance.baseUrl//配置retrofit的baseUrl
-//        YTDownloadManager.instance.defaultSavePath = //默认保存路径
+        YTDownloadManager.instance.defaultSavePath = cacheDir.absolutePath
 //        YTDownloadManager.instance.okHttpClient = //retrofit的okHttpClient
 //        YTDownloadManager.instance.callAdapterFactory = //retrofit的callAdapterFactory
 //        YTDownloadManager.instance.converterFactory = //retrofit的converterFactory

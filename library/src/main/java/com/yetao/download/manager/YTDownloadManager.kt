@@ -54,6 +54,7 @@ class YTDownloadManager {
 
     fun init(application: Application) {
         this.context = application
+        defaultSavePath = application.cacheDir.absolutePath
     }
 
     fun cancel(url:String?){
